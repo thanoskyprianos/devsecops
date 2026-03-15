@@ -11,7 +11,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  DOCKER_IMAGE: ${{ env.REGISTRY }}/thanoskyprianos/devsecops:latest
+  DOCKER_IMAGE: ghcr.io/thanoskyprianos/devsecops:latest
 
 jobs:
   scout:
@@ -40,13 +40,13 @@ jobs:
 
       # Pull the github input image or use the default
       - name: Pull the image
-        run: docker pull ${{ github.event.inputs.docker_image }}
+        run: docker pull ${{ env.DOCKER_IMAGE }}
 
       - name: Docker Scout
         uses: docker/scout-action@v1
         with:
           command: cves,recommendations,compare,sbom
-          image: ${{ github.event.inputs.docker_image }}
+          image: ${{ env.DOCKER_IMAGE }}
           #only-severities: critical,high # only show critical and high CVEs
           #only-fixed: true # filter to fixed CVEs
           exit-code: false  # fail or not based on CVEs found?
